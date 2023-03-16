@@ -17,6 +17,7 @@
     "fluent-ffmpeg": "^2.1.2",
     "fs": "^0.0.1-security",
     "http": "^0.0.1-security",
+    "node-cron": "^3.0.2",
     "nodemon": "^2.0.21",
     "path": "^0.12.7",
     "uuid": "^9.0.0"

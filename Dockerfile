@@ -1,5 +1,5 @@
 # Gunakan image Node.js versi 14 sebagai base image
-FROM node:14
+FROM node:16
 
 # Buat direktori kerja
 WORKDIR /app

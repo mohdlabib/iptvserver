@@ -4,9 +4,10 @@ const fs = require('fs');
 const http = require('http');
 const { exec } = require('child_process');
 const { v4: uuidv4 } = require('uuid');
+const cron = require('node-cron');
 
 const port = process.env.PORT || 3000
-const apiKey = '12344321'; // definisikan API key yang valid
+const apiKey = '1234'; // definisikan API key yang valid
 
 const app = express();
 
@@ -15,7 +16,7 @@ function downloadImages() {
   fs.readdirSync('images').forEach(file => fs.unlinkSync(`images/${file}`));
 
   // URL file M3U
-  const url = 'https://iptv-org.github.io/iptv/countries/id.m3u';
+  const url = 'https://iptv-org.github.io/iptv/subdivisions/id-ja.m3u';
 
   // Ambil isi file M3U menggunakan Axios
   axios.get(url)
@@ -68,9 +69,14 @@ function downloadImages() {
 
 downloadImages();
 
-setInterval(() => {
+cron.schedule('0 */6 * * *', () => {
   downloadImages();
-}, 30 * 60 * 1000);
+}, {
+  scheduled: true,
+  timezone: "Asia/Jakarta"
+});
+
+app.use(express.static('images'));
 
 app.get('/', (req, res) => {
   // Periksa apakah parameter API key diberikan dan valid
