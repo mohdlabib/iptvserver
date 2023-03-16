@@ -16,7 +16,7 @@ function downloadImages() {
   fs.readdirSync('images').forEach(file => fs.unlinkSync(`images/${file}`));
 
   // URL file M3U
-  const url = 'https://iptv-org.github.io/iptv/countries/id.m3u';
+  const url = 'https://iptv-org.github.io/iptv/subdivisions/id-ri.m3u';
 
   // Ambil isi file M3U menggunakan Axios
   axios.get(url)
@@ -43,6 +43,7 @@ function downloadImages() {
             console.log('Daftar URL berhasil disimpan dalam file playlist.json');
 
             // Download gambar dari setiap URL yang berhasil diakses dan simpan ke folder
+            let numImagesDownloaded = 0;
             successUrls.forEach(({ url, filename }) => {
               const filePath = `images/${filename}`; // Tentukan path file
 
@@ -54,6 +55,12 @@ function downloadImages() {
                   return;
                 }
                 console.log(`Gambar ${filename} berhasil disimpan`);
+                numImagesDownloaded++;
+
+                // Jika sudah semua gambar berhasil diunduh, log selesai
+                if (numImagesDownloaded === successUrls.length) {
+                  console.log(`selesai pada ${new Date().toLocaleString()}`);
+                }
               });
             });
           });
