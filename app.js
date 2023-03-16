@@ -1,7 +1,14 @@
 const axios = require('axios');
+const express = require('express');
 const fs = require('fs');
+const http = require('http');
 const { exec } = require('child_process');
 const { v4: uuidv4 } = require('uuid');
+
+const port = process.env.PORT || 3000
+const apiKey = '12344321'; // definisikan API key yang valid
+
+const app = express();
 
 function downloadImages() {
   // Hapus isi folder images
@@ -65,3 +72,28 @@ setInterval(() => {
   downloadImages();
 }, 30 * 60 * 1000);
 
+app.get('/', (req, res) => {
+  // Periksa apakah parameter API key diberikan dan valid
+  const requestApiKey = req.query.apikey;
+  if (requestApiKey !== apiKey) {
+    res.status(401).send('API key tidak valid.');
+  } else {
+    // Baca file JSON
+    fs.readFile('playlist.json', 'utf8', (err, data) => {
+      if (err) {
+        // Tangani kesalahan jika gagal membaca file
+        console.error(err);
+        res.status(500).send('Terjadi kesalahan pada server.');
+      } else {
+        // Kirim data JSON sebagai respons HTTP
+        res.status(200).json(JSON.parse(data));
+      }
+    });
+  }
+});
+
+const server = http.createServer(app);
+
+server.listen(port, () => {
+  console.log(`Server berjalan pada port ${port}`);
+});
