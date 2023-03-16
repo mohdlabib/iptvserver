@@ -16,7 +16,7 @@ function downloadImages() {
   fs.readdirSync('images').forEach(file => fs.unlinkSync(`images/${file}`));
 
   // URL file M3U
-  const url = 'https://iptv-org.github.io/iptv/subdivisions/id-ja.m3u';
+  const url = 'https://iptv-org.github.io/iptv/countries/id.m3u';
 
   // Ambil isi file M3U menggunakan Axios
   axios.get(url)
