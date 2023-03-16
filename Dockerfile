@@ -10,6 +10,9 @@ COPY package*.json ./
 # Install dependencies
 RUN npm install
 
+RUN apt-get update && \
+    apt-get install -y ffmpeg
+
 # Salin seluruh file ke direktori kerja
 COPY . .
 
